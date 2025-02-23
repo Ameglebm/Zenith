@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import History from './components/History'; // Importe o componente History
+import History from './components/History'; 
 
 export default function App() {
   const [isRunning, setIsRunning] = useState(false);
@@ -12,7 +12,7 @@ export default function App() {
   const [coordinates, setCoordinates] = useState([]); // Coordenadas do usuário
   const [watchId, setWatchId] = useState(null); // ID do rastreamento de localização
   const [history, setHistory] = useState([]); // Histórico de corridas
-  const mapRef = useRef(null); // Referência para o mapa
+  const mapRef = useRef(null); 
 
   // Solicita permissão de localização
   const requestLocationPermission = async () => {
@@ -210,8 +210,8 @@ export default function App() {
           ref={mapRef}
           style={styles.map}
           initialRegion={{
-            latitude: coordinates[0]?.latitude || -23.5505, // Latitude inicial (ex: São Paulo)
-            longitude: coordinates[0]?.longitude || -46.6333, // Longitude inicial (ex: São Paulo)
+            latitude: coordinates[0]?.latitude || -23.5505, 
+            longitude: coordinates[0]?.longitude || -46.6333, 
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}
@@ -222,7 +222,7 @@ export default function App() {
             strokeColor="#045708" // Cor da linha
             strokeWidth={3} // Espessura da linha
           />
-          {/* Marcador da localização atual (bonequinho) */}
+          {/* Marcador da localização atual bonequinho */}
           {coordinates.length > 0 && (
             <Marker coordinate={coordinates[coordinates.length - 1]}>
               <View style={styles.markerContainer}>
