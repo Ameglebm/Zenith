@@ -23,9 +23,16 @@
       },
       "permissions": [
         "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION"
+        "ACCESS_COARSE_LOCATION",
+        "FOREGROUND_SERVICE",
+        "WAKE_LOCK"
       ],
-      "package": "com.zenith"
+      "package": "com.zenith",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCx8Ahi-nDiygHMvyeeszBKTc7tu1568MI"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
