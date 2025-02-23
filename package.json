@@ -13,11 +13,16 @@
     "@react-native-async-storage/root": "github:react-native-async-storage/async-storage",
     "@react-navigation/native": "^7.0.3",
     "@react-navigation/stack": "^7.0.5",
+    "axios": "^1.7.9",
     "expo": "~52.0.9",
+    "expo-location": "~18.0.7",
     "expo-status-bar": "~2.0.0",
     "react": "18.3.1",
     "react-native": "0.76.2",
     "react-native-gesture-handler": "^2.21.2",
+    "react-native-google-fit": "^0.21.0",
+    "react-native-maps": "^1.18.0",
+    "react-native-maps-directions": "^1.9.0",
     "react-native-reanimated": "^3.16.2"
   },
   "devDependencies": {
