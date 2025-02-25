@@ -215,6 +215,7 @@ export default function App() {
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}
+          mapType="satellite"  // Muda para o modo satélite
         >
           {/* Exibe a rota percorrida */}
           <Polyline

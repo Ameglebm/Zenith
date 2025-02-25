@@ -27,7 +27,7 @@
         "FOREGROUND_SERVICE",
         "WAKE_LOCK"
       ],
-      "package": "com.zenith",
+      "package": "com.walkzenith",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCx8Ahi-nDiygHMvyeeszBKTc7tu1568MI"
