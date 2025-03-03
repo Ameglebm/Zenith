@@ -36,7 +36,7 @@ export default function App() {
     const subscription = await Location.watchPositionAsync(
       {
         accuracy: Location.Accuracy.High, // Alta precisão
-        distanceInterval: 10, // Atualiza a cada 10 metros
+        distanceInterval: 5, // Atualiza a cada 10 metros
       },
       (location) => {
         const { latitude, longitude } = location.coords;
