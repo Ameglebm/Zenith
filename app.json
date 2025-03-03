@@ -1,33 +1,45 @@
 {
   "expo": {
     "name": "Zenith",
-    "slug": "Zenith",
+    "slug": "zenith",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#1C1C1C"
     },
-    "ios": {
-      "supportsTablet": true
+    "updates": {
+      "fallbackToCacheTimeout": 0
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#1C1C1C"
       },
-      "package": "com.amegle.Zenith"
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "FOREGROUND_SERVICE",
+        "WAKE_LOCK"
+      ],
+      "package": "com.walkzenith",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCx8Ahi-nDiygHMvyeeszBKTc7tu1568MI"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "0b9f79e4-505d-45d2-b1dc-5f535178ec13"
+        "projectId": "884c0693-6d84-4309-ab25-d68c7b89a7ad"
       }
     }
   }
