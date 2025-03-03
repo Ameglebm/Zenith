@@ -2,30 +2,25 @@ import React, { useState, useRef } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import History from './components/History'; 
+import History from './components/History';
 
 export default function App() {
   const [isRunning, setIsRunning] = useState(false);
   const [time, setTime] = useState(0);
   const [intervalId, setIntervalId] = useState(null);
-  const [distance, setDistance] = useState(0); // Distância percorrida em km
-  const [coordinates, setCoordinates] = useState([]); // Coordenadas do usuário
-  const [watchId, setWatchId] = useState(null); // ID do rastreamento de localização
-  const [history, setHistory] = useState([]); // Histórico de corridas
-  const mapRef = useRef(null); 
+  const [distance, setDistance] = useState(0);
+  const [coordinates, setCoordinates] = useState([]);
+  const [watchId, setWatchId] = useState(null);
+  const [history, setHistory] = useState([]);
+  const mapRef = useRef(null);
 
-  // Solicita permissão de localização
+  // Solicita permissão para acessar a localização
   const requestLocationPermission = async () => {
-    try {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      return status === 'granted';
-    } catch (error) {
-      console.error('Erro ao solicitar permissão de localização:', error);
-      return false;
-    }
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    return status === 'granted';
   };
 
-  // Inicia o rastreamento da localização
+  // Inicia o rastreamento de localização
   const startTracking = async () => {
     const hasPermission = await requestLocationPermission();
     if (!hasPermission) {
@@ -34,19 +29,14 @@ export default function App() {
     }
 
     const subscription = await Location.watchPositionAsync(
-      {
-        accuracy: Location.Accuracy.High, // Alta precisão
-        distanceInterval: 5, // Atualiza a cada 10 metros
-      },
+      { accuracy: Location.Accuracy.High, distanceInterval: 10 },
       (location) => {
         const { latitude, longitude } = location.coords;
         const newCoordinate = { latitude, longitude };
 
-        // Atualiza as coordenadas
         setCoordinates((prev) => {
           const newCoordinates = [...prev, newCoordinate];
 
-          // Calcula a distância percorrida
           if (newCoordinates.length > 1) {
             const lastCoordinate = newCoordinates[newCoordinates.length - 2];
             const newDistance = calculateDistance(lastCoordinate, newCoordinate);
@@ -56,7 +46,6 @@ export default function App() {
           return newCoordinates;
         });
 
-        // Centraliza o mapa na nova localização
         if (mapRef.current) {
           mapRef.current.animateToRegion({
             latitude,
@@ -74,7 +63,7 @@ export default function App() {
   // Para o rastreamento da localização
   const stopTracking = () => {
     if (watchId) {
-      watchId.remove(); // Para o rastreamento
+      watchId.remove();
       setWatchId(null);
     }
   };
@@ -91,7 +80,7 @@ export default function App() {
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // Distância em km
+    return R * c;
   };
 
   const startTimer = () => {
@@ -99,9 +88,7 @@ export default function App() {
       setIsRunning(true);
       startTracking();
 
-      const id = setInterval(() => {
-        setTime((prev) => prev + 1);
-      }, 1000);
+      const id = setInterval(() => setTime((prev) => prev + 1), 1000);
       setIntervalId(id);
     }
   };
@@ -123,8 +110,8 @@ export default function App() {
 
   const saveRun = () => {
     if (time > 0 && distance > 0) {
-      const avgSpeed = (distance / (time / 3600)).toFixed(2); // Velocidade média em km/h
-      const calories = (distance * 60).toFixed(0); // Calorias estimadas
+      const avgSpeed = (distance / (time / 3600)).toFixed(2);
+      const calories = (distance * 60).toFixed(0);
       const runData = {
         time,
         distance: distance.toFixed(2),
@@ -134,7 +121,6 @@ export default function App() {
         timeOfDay: new Date().toLocaleTimeString(),
       };
 
-      // Adiciona a corrida ao histórico
       setHistory((prev) => [...prev, runData]);
       resetTimer();
     } else {
@@ -148,9 +134,9 @@ export default function App() {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
     };
-  
-    setCoordinates((prev) => [...prev, newCoordinate]); // Adiciona a nova posição
-  
+
+    setCoordinates((prev) => [...prev, newCoordinate]);
+
     if (mapRef.current) {
       mapRef.current.animateToRegion({
         latitude: newCoordinate.latitude,
@@ -160,18 +146,15 @@ export default function App() {
       });
     }
   };
-  
 
   return (
     <View style={styles.container}>
-      {/* Cronômetro */}
       <View style={styles.chronometerContainer}>
         <Text style={styles.timer}>{formatTime(time)}</Text>
         <Text style={styles.distanceText}>
           Distância: {(distance * 1000).toFixed(2)} metros
         </Text>
 
-        {/* Botões de controle */}
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
             style={[styles.button, isRunning && styles.buttonActive]}
@@ -204,46 +187,25 @@ export default function App() {
         </View>
       </View>
 
-      {/* Mapa */}
       <View style={styles.mapContainer}>
-        <MapView
-          ref={mapRef}
-          style={styles.map}
-          initialRegion={{
-            latitude: coordinates[0]?.latitude || -23.5505, 
-            longitude: coordinates[0]?.longitude || -46.6333, 
+        <MapView ref={mapRef} style={styles.map} initialRegion={{
+            latitude: coordinates[0]?.latitude || -23.5505,
+            longitude: coordinates[0]?.longitude || -46.6333,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
-          }}
-          mapType="satellite"  // Muda para o modo satélite
-        >
-          {/* Exibe a rota percorrida */}
-          <Polyline
-            coordinates={coordinates}
-            strokeColor="#045708" // Cor da linha
-            strokeWidth={3} // Espessura da linha
-          />
-          {/* Marcador da localização atual bonequinho */}
+          }}>
+          <Polyline coordinates={coordinates} strokeColor="#045708" strokeWidth={3} />
           {coordinates.length > 0 && (
             <Marker coordinate={coordinates[coordinates.length - 1]}>
-              <View style={styles.markerContainer}>
-                <Text style={styles.markerText}>🚶‍♂️</Text>
-              </View>
+              <Text style={styles.markerText}>🚶‍♂️</Text>
             </Marker>
           )}
-
         </MapView>
-
-        {/* Botão para centralizar a localização */}
-        <TouchableOpacity
-          style={styles.centerButton}
-          onPress={centerMapOnLocation}
-        >
+        <TouchableOpacity style={styles.centerButton} onPress={centerMapOnLocation}>
           <Text style={styles.centerButtonText}>📍</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Histórico de corridas */}
       <History history={history} />
     </View>
   );
@@ -289,13 +251,15 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingVertical: 14,
+    paddingHorizontal: 10,
     backgroundColor: '#b0b0b0',
     borderRadius: 8,
     alignItems: 'center',
+    justifyContent: 'center',
     flex: 1,
     marginHorizontal: 5,
+    maxWidth: 120, // Limitar a largura máxima do botão
   },
   buttonActive: {
     backgroundColor: '#165bba',
@@ -304,9 +268,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#207735',
   },
   buttonText: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 'bold',
     color: '#ffffff',
+    textAlign: 'center',
+    flexShrink: 1, // Permite que o texto se ajuste
+    overflow: 'hidden', // Impede o texto de ultrapassar o botão
   },
   mapContainer: {
     height: 300, // Altura do mapa
@@ -340,8 +307,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 20,
   },
-    markerText: {
-      fontSize: 24,
-    },
-
+  markerText: {
+    fontSize: 24,
+  },
 });
