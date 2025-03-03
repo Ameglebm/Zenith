@@ -215,7 +215,7 @@ export default function App() {
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}
-          mapType="satellite"  // Muda para o modo satélite
+          // mapType="satellite"  // Muda para o modo satélite
         >
           {/* Exibe a rota percorrida */}
           <Polyline
@@ -239,7 +239,7 @@ export default function App() {
           style={styles.centerButton}
           onPress={centerMapOnLocation}
         >
-          <Text style={styles.centerButtonText}>📍</Text>
+          <Text style={styles.centerButtonText}>📌</Text>
         </TouchableOpacity>
       </View>
 
@@ -289,13 +289,15 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingVertical: 14,
+    paddingHorizontal: 10,
     backgroundColor: '#b0b0b0',
     borderRadius: 8,
     alignItems: 'center',
+    justifyContent: 'center',
     flex: 1,
     marginHorizontal: 5,
+    maxWidth: 120, // Limitar a largura máxima do botão
   },
   buttonActive: {
     backgroundColor: '#165bba',
@@ -304,15 +306,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#207735',
   },
   buttonText: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 'bold',
     color: '#ffffff',
+    textAlign: 'center',
+    flexShrink: 1, // Permite que o texto se ajuste
+    overflow: 'hidden', // Impede o texto de ultrapassar os limites do botão
   },
   mapContainer: {
-    height: 300, // Altura do mapa
+    height: 300,
     borderRadius: 10,
     overflow: 'hidden',
     marginBottom: 20,
+    position: 'relative', // Garantir que o botão seja posicionado corretamente
   },
   map: {
     flex: 1,
@@ -332,16 +338,7 @@ const styles = StyleSheet.create({
   centerButtonText: {
     fontSize: 24,
   },
-
-  markerContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', 
-    padding: 5,
-    borderRadius: 20,
+  markerText: {
+    fontSize: 18,
   },
-    markerText: {
-      fontSize: 24,
-    },
-
 });
