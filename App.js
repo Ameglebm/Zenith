@@ -188,12 +188,16 @@ export default function App() {
       </View>
 
       <View style={styles.mapContainer}>
-        <MapView ref={mapRef} style={styles.map} initialRegion={{
+        <MapView
+          ref={mapRef}
+          style={styles.map}
+          initialRegion={{
             latitude: coordinates[0]?.latitude || -23.5505,
             longitude: coordinates[0]?.longitude || -46.6333,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
-          }}>
+          }}
+        >
           <Polyline coordinates={coordinates} strokeColor="#045708" strokeWidth={3} />
           {coordinates.length > 0 && (
             <Marker coordinate={coordinates[coordinates.length - 1]}>
