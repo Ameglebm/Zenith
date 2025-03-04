@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, AppState } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, AppState, Image } from 'react-native';
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import History from './components/History';
@@ -251,14 +251,19 @@ export default function App() {
             strokeColor="#045708" // Cor da linha
             strokeWidth={3} // Espessura da linha
           />
-          {/* Marcador da localização atual */}
-          {coordinates.length > 0 && (
+           {/* Marcador da localização atual */}
+           {coordinates.length > 0 && (
             <Marker coordinate={coordinates[coordinates.length - 1]}>
               <View style={styles.markerContainer}>
-                <Text style={styles.markerText}>🚶‍♂️</Text>
+                {/* Substituindo o emoji por uma imagem */}
+                <Image
+                  source={require('./assets/seta-vermelha.png')} // Caminho para sua imagem
+                  style={styles.markerImage}
+                />
               </View>
             </Marker>
           )}
+          
         </MapView>
 
         {/* Botão para centralizar a localização */}
@@ -266,7 +271,11 @@ export default function App() {
           style={styles.centerButton}
           onPress={centerMapOnLocation}
         >
-          <Text style={styles.centerButtonText}>📌</Text>
+          {/* Substituindo o emoji 📌 pela imagem alfinete.png */}
+          <Image 
+            source={require('./assets/alfinete.png')}  // Caminho para a imagem
+            style={styles.centerButtonImage}  // Estilo para a imagem
+          />
         </TouchableOpacity>
       </View>
 
@@ -275,6 +284,7 @@ export default function App() {
     </View>
   );
 }
+
 
 // Formata o tempo (mm:ss)
 const formatTime = (seconds) => {
@@ -357,7 +367,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     right: 10,
-    backgroundColor: '#ffffff',
+    backgroundColor: 'transparent',
     borderRadius: 20,
     padding: 10,
     shadowColor: '#000',
