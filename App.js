@@ -141,26 +141,31 @@ export default function App() {
   };
 
   // Salva a corrida no histórico
-  const saveRun = () => {
-    if (time > 0 && distance > 0) {
-      const avgSpeed = (distance / (time / 3600)).toFixed(2); // Velocidade média em km/h
-      const calories = (distance * 60).toFixed(0); // Calorias estimadas
-      const runData = {
-        time,
-        distance: distance.toFixed(2),
-        avgSpeed,
-        calories,
-        date: new Date().toLocaleDateString(),
-        timeOfDay: new Date().toLocaleTimeString(),
-      };
+const saveRun = () => {
+  if (time > 0 && distance > 0) {
+    const avgSpeed = (distance / (time / 3600)).toFixed(2); // Velocidade média em km/h
+    const calories = (distance * 60).toFixed(0); // Calorias estimadas
 
-      // Adiciona a corrida ao histórico
-      setHistory((prev) => [...prev, runData]);
-      resetTimer();
-    } else {
-      alert('Por favor, inicie uma corrida/caminhada antes de salvar.');
-    }
-  };
+    // Se a distância for maior ou igual a 1000 metros, converta para quilômetros
+    const formattedDistance = distance >= 1000 ? (distance / 1000).toFixed(2) : distance.toFixed(2);
+
+    const runData = {
+      time,
+      distance: formattedDistance,  // A distância será formatada corretamente
+      avgSpeed,
+      calories,
+      date: new Date().toLocaleDateString(),
+      timeOfDay: new Date().toLocaleTimeString(),
+    };
+
+    // Adiciona a corrida ao histórico
+    setHistory((prev) => [...prev, runData]);
+    resetTimer();
+  } else {
+    alert('Por favor, inicie uma corrida/caminhada antes de salvar.');
+  }
+};
+
 
   // Centraliza o mapa na localização atual
   const centerMapOnLocation = async () => {
